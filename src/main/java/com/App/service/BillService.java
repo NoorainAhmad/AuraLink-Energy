@@ -8,10 +8,6 @@ import com.App.repository.BillRepository;
 
 import java.util.List;
 
-/**
- * Service layer for Bill operations.
- * Now uses Spring Data JPA Repository instead of DAO with raw JDBC.
- */
 @Service
 public class BillService {
 

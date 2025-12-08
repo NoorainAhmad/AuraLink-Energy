@@ -8,15 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.App.model.Bill;
 
-/**
- * Spring Data JPA Repository for Bill entity.
- * Replaces BillDao with auto-generated CRUD operations.
- * No implementation needed - Spring Data JPA generates it automatically!
- */
 @Repository
 public interface BillRepository extends JpaRepository<Bill, String> {
-
-    // Custom query methods - Spring Data JPA auto-generates the SQL!
 
     /**
      * Find all bills for a specific consumer number.

@@ -9,10 +9,6 @@ import com.App.repository.CustomerRepository;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Service layer for Customer operations.
- * Now uses Spring Data JPA Repository instead of DAO with raw JDBC.
- */
 @Service
 public class CustomerService {
 

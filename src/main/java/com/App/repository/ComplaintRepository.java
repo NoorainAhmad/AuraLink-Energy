@@ -8,14 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.App.model.Complaint;
 
-/**
- * Spring Data JPA Repository for Complaint entity.
- * Replaces ComplaintDAO with auto-generated CRUD operations.
- */
 @Repository
 public interface ComplaintRepository extends JpaRepository<Complaint, String> {
-
-    // Custom query methods
 
     /**
      * Find complaints by customer number
