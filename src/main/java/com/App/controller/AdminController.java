@@ -49,9 +49,8 @@ public class AdminController {
         }
     }
 
-    /**
-     * Get all admins (admin only)
-     */
+    // Get all admins (admin only)
+
     @GetMapping("/all")
     public ResponseEntity<List<Admin>> getAllAdmins() {
         List<Admin> admins = adminService.getAllAdmins();
