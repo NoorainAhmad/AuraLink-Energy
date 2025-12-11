@@ -1,14 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import billService from '../../services/billService';
+import authService from '../../services/authService';
 
 function BillList() {
     const [bills, setBills] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
+    const [role, setRole] = useState(null);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
+        const currentRole = authService.getRole();
+        const currentUser = authService.getCurrentUser();
+        setRole(currentRole);
+        setUser(currentUser);
         fetchBills();
     }, []);
 
@@ -44,18 +51,30 @@ function BillList() {
         }
     };
 
-    const filteredBills = bills.filter(bill =>
-        bill.consumerNumber?.toString().includes(searchTerm) ||
-        bill.billNumber?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredBills = bills
+        .filter(bill => {
+            // If customer, only show their bills
+            if (role === 'customer' && user) {
+                // Convert both to strings to handle type mismatch (API returns string, localStorage may have number)
+                return String(bill.consumerNumber).trim() === String(user.consumerNumber).trim();
+            }
+            // Admin sees all bills
+            return true;
+        })
+        .filter(bill =>
+            bill.consumerNumber?.toString().includes(searchTerm) ||
+            bill.billNumber?.toLowerCase().includes(searchTerm.toLowerCase())
+        );
 
     if (loading) return <div className="loading-container"><div className="spinner"></div></div>;
 
     return (
         <div className="page-container">
             <div className="page-header">
-                <h1>Bill Management</h1>
-                <Link to="/bills/add" className="btn btn-primary">+ Add Bill</Link>
+                <h1>{role === 'admin' ? 'All Bills' : 'My Bills'}</h1>
+                {role === 'admin' && (
+                    <Link to="/bills/add" className="btn btn-primary">+ Add Bill</Link>
+                )}
             </div>
 
             {error && <div className="error-message">{error}</div>}
@@ -113,12 +132,14 @@ function BillList() {
                                                             Pay
                                                         </button>
                                                     )}
-                                                    <button
-                                                        onClick={() => handleDelete(bill.consumerNumber)}
-                                                        className="btn btn-sm btn-danger"
-                                                    >
-                                                        Delete
-                                                    </button>
+                                                    {role === 'admin' && (
+                                                        <button
+                                                            onClick={() => handleDelete(bill.consumerNumber)}
+                                                            className="btn btn-sm btn-danger"
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </td>
                                         </tr>

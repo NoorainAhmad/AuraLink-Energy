@@ -70,9 +70,24 @@
     gap: var(--spacing-md);
 }
 
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
 .user-name {
-    color: var(--text-secondary);
+    color: var(--text-primary);
     font-size: var(--text-sm);
+    font-weight: 600;
+}
+
+.user-role {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 @media (max-width: 768px) {

@@ -1,11 +1,13 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import Header from './components/Layout/Header';
 import Dashboard from './components/Dashboard/Dashboard';
 import CustomerList from './components/Customer/CustomerList';
 import CustomerForm from './components/Customer/CustomerForm';
 import BillList from './components/Bill/BillList';
+import AddBill from './components/Bill/AddBill';
 import ComplaintList from './components/Complaint/ComplaintList';
 import ComplaintForm from './components/Complaint/ComplaintForm';
 import './styles/index.css';
@@ -17,6 +19,7 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         {/* Protected Routes */}
         <Route
@@ -37,6 +40,7 @@ function App() {
 
                     {/* Bill Routes */}
                     <Route path="/bills" element={<BillList />} />
+                    <Route path="/bills/add" element={<AddBill />} />
 
                     {/* Complaint Routes */}
                     <Route path="/complaints" element={<ComplaintList />} />

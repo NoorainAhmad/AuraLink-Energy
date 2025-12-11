@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import customerService from '../../services/customerService';
+import authService from '../../services/authService';
 import './Login.css';
 
 function Login() {
     const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
+    const [role, setRole] = useState('customer'); // Default to customer
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -16,18 +17,25 @@ function Login() {
         setLoading(true);
 
         try {
-            const customer = await customerService.login(userId, password);
+            const response = await authService.login(userId, password, role);
 
-            if (customer && customer.userId) {
-                // Store user data in localStorage
-                localStorage.setItem('user', JSON.stringify(customer));
+            if (response && response.success) {
+                // Store user data and role in localStorage
+                authService.storeUserData(response, role);
+
+                console.log(`${role} login successful:`, response);
+
                 // Redirect to dashboard
                 navigate('/dashboard');
             } else {
-                setError('Invalid credentials. Please try again.');
+                setError(response.message || 'Invalid credentials. Please try again.');
             }
         } catch (err) {
-            setError('Login failed. Please check your credentials.');
+            if (err.response && err.response.status === 401) {
+                setError('Invalid credentials. Please check your username and password.');
+            } else {
+                setError('Login failed. Please try again.');
+            }
             console.error('Login error:', err);
         } finally {
             setLoading(false);
@@ -48,9 +56,32 @@ function Login() {
                 <form onSubmit={handleSubmit} className="login-form">
                     {error && <div className="error-message">{error}</div>}
 
+                    {/* Role Selection */}
+                    <div className="form-group">
+                        <label className="form-label">Login As</label>
+                        <div className="role-selector">
+                            <button
+                                type="button"
+                                className={`role-btn ${role === 'customer' ? 'active' : ''}`}
+                                onClick={() => setRole('customer')}
+                            >
+                                <span className="role-icon">👤</span>
+                                <span>Customer</span>
+                            </button>
+                            <button
+                                type="button"
+                                className={`role-btn ${role === 'admin' ? 'active' : ''}`}
+                                onClick={() => setRole('admin')}
+                            >
+                                <span className="role-icon">👨‍💼</span>
+                                <span>Admin</span>
+                            </button>
+                        </div>
+                    </div>
+
                     <div className="form-group">
                         <label htmlFor="userId" className="form-label">
-                            User ID
+                            {role === 'admin' ? 'Username' : 'User ID'}
                         </label>
                         <input
                             type="text"
@@ -58,7 +89,7 @@ function Login() {
                             className="form-input"
                             value={userId}
                             onChange={(e) => setUserId(e.target.value)}
-                            placeholder="Enter your user ID"
+                            placeholder={role === 'admin' ? 'Enter your username' : 'Enter your user ID'}
                             required
                         />
                     </div>
@@ -89,7 +120,7 @@ function Login() {
 
                 <div className="login-footer">
                     <p className="text-muted text-center">
-                        Don't have an account? <a href="/register">Register here</a>
+                        Don't have an account? <a href="/register" className="register-link">Register here</a>
                     </p>
                 </div>
             </div>
