@@ -41,8 +41,7 @@ public interface ComplaintRepository extends JpaRepository<Complaint, String> {
      */
     List<Complaint> findByCustomerNumberAndComplaintStatus(String customerNumber, String complaintStatus);
 
-    /**
-     * Find a complaint by complaint ID
-     */
+    // Find a complaint by complaint ID
+
     Optional<Complaint> findByComplaintId(String complaintId);
 }
