@@ -85,7 +85,7 @@ function AddBill() {
                                     className="form-input"
                                     value={bill.billingPeriod}
                                     onChange={(e) => setBill({ ...bill, billingPeriod: e.target.value })}
-                                    placeholder="e.g., January 2025"
+                                    placeholder="DD/MM/YYYY"
                                     required
                                 />
                             </div>
