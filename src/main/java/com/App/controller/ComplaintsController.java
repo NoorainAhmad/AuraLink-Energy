@@ -75,7 +75,6 @@ public class ComplaintsController {
     // Get Complaints by Customer Number
     @GetMapping("/complaintsById/{id}")
     public List<Complaint> getAllComplaintsById(@PathVariable String id) {
-        System.out.println("Comaplints By ID calling..");
         return complaintService.getComplaintByCustomerId(id);
     }
 
@@ -84,8 +83,6 @@ public class ComplaintsController {
     @GetMapping("/complaints")
 
     public List<Complaint> getAllComplaints() {
-
-        System.out.println("This is inside Complaints getAll Method ");
 
         List<Complaint> complaints = complaintService.getAllComplaints();
 
