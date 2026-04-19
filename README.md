@@ -2,7 +2,7 @@
 
 AuraLink-Energy is a comprehensive solution designed to streamline electricity management for both customers and utility providers. This application allows customers to track their billing history, view current bill details, make secure payments, and file formal complaints directly through an intuitive digital interface.
 
----
+-----
 
 ## 🚀 Key Features
 
